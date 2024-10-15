@@ -1,3 +1,2 @@
-﻿FizzBuzz fizzbuzz = new FizzBuzz();
-fizzbuzz.CountTo(15);
-
+FizzBuzz fizzBuzz = new FizzBuzz();
+fizzBuzz.CountTo(15);
