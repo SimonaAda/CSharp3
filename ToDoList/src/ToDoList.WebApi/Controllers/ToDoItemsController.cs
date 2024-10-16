@@ -10,7 +10,7 @@ public class ToDoItemsController : ControllerBase
 {
     private static readonly List<ToDoItem> items = [];
 
-    [HttpGet]
+    [HttpPost]
     public IActionResult Create(ToDoItemCreateRequestDto request)
     {
         var item = request.ToDomain();
@@ -28,12 +28,28 @@ public class ToDoItemsController : ControllerBase
 
     [HttpGet]
     public IActionResult Read()
-    {
-        return Ok();
+    { 
+        try
+        {
+
+            if (items == null)
+            {
+                return NotFound();
+            }
+
+            var ToDoItem = items.ToDoItemGetResponseDto.FromDomain.ToList();
+            items.Add(ToDoItem);
+            return Ok(ToDoItem);
+        }
+        catch(Exception ex)
+        {
+            return this.Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
+        }
+        
     }
 
     [HttpGet("{toDoItemId:int}")]
-    public IActionResult ReadById(int toDoItemId)
+    public IActionResult ReadById(int toDoItemId, [FromBody] ToDoItemGetResponseDto request)
     {
         return Ok();
     }
@@ -47,7 +63,24 @@ public class ToDoItemsController : ControllerBase
     [HttpDelete("{toDoItemId:int}")]
      public IActionResult DeleteById(int toDoItemId)
     {
-        return Ok();
-    }
 
+        try
+        {
+            var toDoItem = items.Find(item => item.ToDoItemId == toDoItemId);
+
+            if (toDoItem == null)
+            {
+                return NotFound();
+            }
+            items.Remove(toDoItem);
+            return NoContent();
+        }
+        catch(Exception ex)
+        {
+            return this.Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
+        }
+
+    }
 }
+
+
