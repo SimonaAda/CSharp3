@@ -11,7 +11,7 @@ public class ToDoItemsController : ControllerBase
     public static List<ToDoItem> items = [];
 
     [HttpPost]
-    public IActionResult Create(ToDoItemCreateRequestDto request)
+    public ActionResult<ToDoItemGetResponseDto> Create(ToDoItemCreateRequestDto request)
     {
         var item = request.ToDomain();
         try
@@ -51,17 +51,17 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet("{toDoItemId:int}")]
-    public IActionResult ReadById(int toDoItemId)
+    public ActionResult<ToDoItemGetResponseDto> ReadById(int toDoItemId)
     {
+        ToDoItem? itemToGet;
         try
         {
-            var toDoItem = items.Find(i => i.ToDoItemId == toDoItemId);
-            if (toDoItem == null)
+            itemToGet = items.Find(i => i.ToDoItemId == toDoItemId);
+            if (itemToGet == null)
             {
                 return NotFound();
             }
-            var itemsToGet = ToDoItemGetResponseDto.FromDomain(toDoItem);
-            return Ok(itemsToGet);
+            return Ok(ToDoItemGetResponseDto.FromDomain(itemToGet));
         }
         catch (Exception ex)
         {
@@ -72,17 +72,18 @@ public class ToDoItemsController : ControllerBase
     [HttpPut("{toDoItemId:int}")]
     public IActionResult UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
-        try
+
+        var updatedItem = request.ToDomain();//map to Domain object as soon as possible
+
+        try //try to update the item by retrieving it with given id
         {
-            var updatedItem = request.ToDomain();
-            updatedItem.ToDoItemId = toDoItemId;
             var currentItemIndex = items.FindIndex(i => i.ToDoItemId == toDoItemId);
 
             if (currentItemIndex == -1)
             {
                 return NotFound();
             }
-
+            updatedItem.ToDoItemId = toDoItemId;
             items[currentItemIndex] = updatedItem;
 
             return NoContent();
@@ -98,20 +99,19 @@ public class ToDoItemsController : ControllerBase
     {
         try
         {
-            var toDoItem = items.Find(item => item.ToDoItemId == toDoItemId);
+            var itemToDelete = items.Find(item => item.ToDoItemId == toDoItemId);
 
-            if (toDoItem == null)
+            if (itemToDelete == null)
             {
-                return NotFound();
+                return NotFound(); //404
             }
-            items.Remove(toDoItem);
-            return NoContent();
+            items.Remove(itemToDelete);
         }
         catch (Exception ex)
         {
             return this.Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }
-
+        return NoContent();//204
     }
 }
 
