@@ -21,8 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ToDoList.Domain\ToDoList.Domain.csproj" />
     <ProjectReference Include="..\..\src\ToDoList.WebApi\ToDoList.WebApi.csproj" />
+    <ProjectReference Include="..\..\src\ToDoList.Domain\ToDoList.Domain.csproj" />
+    
   </ItemGroup>
 
 </Project>
