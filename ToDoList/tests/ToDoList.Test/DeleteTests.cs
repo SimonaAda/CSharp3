@@ -41,7 +41,7 @@ public class DeleteTests
         {
             ToDoItemId = 1
         };
-
+        ToDoItemsController.items.Add(toDoItem); //Assert.Single neprochazel, protoze toDoItem nebyl pridan do items
         // Act
         var result = controller.DeleteById(99);
         var notFoundResult = result as NotFoundResult;

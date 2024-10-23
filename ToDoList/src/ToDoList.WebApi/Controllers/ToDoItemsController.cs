@@ -19,7 +19,7 @@ public class ToDoItemsController : ControllerBase
             item.ToDoItemId = items.Count == 0 ? 1 : items.Max(o => o.ToDoItemId) + 1;
             items.Add(item);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return this.Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }

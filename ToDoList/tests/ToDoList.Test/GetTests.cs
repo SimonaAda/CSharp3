@@ -1,7 +1,7 @@
 namespace ToDoList.Test;
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.AspNetCore.Authentication; //zbytecne
+using Microsoft.AspNetCore.Mvc.Diagnostics; //zbytecne
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
@@ -34,11 +34,13 @@ public class GetTests
         Assert.IsType<OkObjectResult>(resultResult);
         Assert.NotNull(value);
 
-        var firstItem = value.First();
+        var firstItem = value.First(); //neprochazi to, tady nas zloby ty problemy co byly na lekci, doporucuji si vratit to aby Read metoda vracela IActionResult, je to pak jednodussi :)
         Assert.Equal(toDoItem.ToDoItemId, firstItem.Id);
         Assert.Equal(toDoItem.Description, firstItem.Description);
         Assert.Equal(toDoItem.IsCompleted, firstItem.IsCompleted);
         Assert.Equal(toDoItem.Name, firstItem.Name);
+
+        //spis by to chtelo test ze pokud mame v items 3 ukoly, tak dostanu 3 ukoly z Read akce - muze to vracet nespravny pocet
 
     }
 }

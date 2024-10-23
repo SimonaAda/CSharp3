@@ -1,13 +1,13 @@
 namespace ToDoList.Test;
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.AspNetCore.Authentication; //zbytecne
+using Microsoft.AspNetCore.Mvc.Diagnostics; //zbytecne
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.WebApi.Controllers;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Http.HttpResults; //zbytecne
+using System.Runtime.CompilerServices; //zbytecne
 
 public class UpdateTests
 {
@@ -27,12 +27,8 @@ public class UpdateTests
         };
         ToDoItemsController.items.Add(toDoItem);
 
-        var updatedItem = new ToDoItemUpdateRequestDto
-        {
-            Name = "Updated Jmeno",
-            Description = "Updated Popis",
-            IsCompleted = true
-        };
+        //musel jsem upravit aby mi to fungovalo, tobe to nedavalo kompilacni errory?
+        var updatedItem = new ToDoItemUpdateRequestDto(Name: "Updated Jmeno", Description: "Update Popis", IsCompleted: true);
 
         // Act
         var result = controller.UpdateById(1, updatedItem);
@@ -40,8 +36,9 @@ public class UpdateTests
         // Assert
         Assert.IsType<NoContentResult>(result);
         Assert.Single(ToDoItemsController.items);
-        Assert.Equal("Updated Jmeno", ToDoItemsController.items.First().Name);
+        Assert.Equal("Updated Jmeno", ToDoItemsController.items.First().Name); //"Updated Jmeno" neni dobre mit hardcoded, muzeme vyuzit updatedItem.Name
         Assert.True(ToDoItemsController.items.First().IsCompleted);
+        //chtelo by to jeste test Description
     }
 
     [Fact]
@@ -57,13 +54,8 @@ public class UpdateTests
             IsCompleted = false
         };
         ToDoItemsController.items.Add(toDoItem);
-
-        var updatedItem = new ToDoItemUpdateRequestDto
-        {
-            Name = "Updated Jmeno",
-            Description = "Updated Popis",
-            IsCompleted = true
-        };
+        //musel jsem upravit aby mi to fungovalo, tobe to nedavalo kompilacni errory?
+        var updatedItem = new ToDoItemUpdateRequestDto(Name: "Update Jmeno", Description: "Update Popis", IsCompleted: true);
 
         // Act
         var result = controller.UpdateById(99, updatedItem);

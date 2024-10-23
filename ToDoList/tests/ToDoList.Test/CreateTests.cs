@@ -1,7 +1,7 @@
 namespace ToDoList.Test;
 
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic; //zbytecne
+using System.Security.Cryptography.X509Certificates; //zbytecne
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
@@ -18,12 +18,8 @@ public class CreateTests
         var controller = new ToDoItemsController();
         ToDoItemsController.items = [];
 
-        var newItem = new ToDoItemCreateRequestDto
-        {
-            Name = "new Jmeno",
-            Description = "new Popis",
-            IsCompleted = false
-        };
+        //musel jsem upravit aby mi to fungovalo, tobe to nedavalo kompilacni errory?
+        var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Popis", false);
 
         //Act
         var result = controller.Create(newItem);
