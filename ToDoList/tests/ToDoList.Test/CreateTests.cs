@@ -1,10 +1,7 @@
 namespace ToDoList.Test;
 
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
-using ToDoList.Domain.Models;
 using ToDoList.WebApi.Controllers;
 using Xunit;
 
@@ -18,12 +15,7 @@ public class CreateTests
         var controller = new ToDoItemsController();
         ToDoItemsController.items = [];
 
-        var newItem = new ToDoItemCreateRequestDto
-        {
-            Name = "new Jmeno",
-            Description = "new Popis",
-            IsCompleted = false
-        };
+        var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Popis", false);
 
         //Act
         var result = controller.Create(newItem);

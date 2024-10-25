@@ -11,7 +11,7 @@ public class ToDoItemsController : ControllerBase
     public static List<ToDoItem> items = [];
 
     [HttpPost]
-    public ActionResult<ToDoItemGetResponseDto> Create(ToDoItemCreateRequestDto request)
+    public IActionResult Create(ToDoItemCreateRequestDto request)
     {
         var item = request.ToDomain();
         try
@@ -30,7 +30,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ToDoItemGetResponseDto>> Read()
+    public IActionResult Read(ToDoItemGetResponseDto request)
     {
         List<ToDoItem> itemsToGet;
         try
@@ -51,7 +51,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet("{toDoItemId:int}")]
-    public ActionResult<ToDoItemGetResponseDto> ReadById(int toDoItemId)
+    public IActionResult ReadById(int toDoItemId, ToDoItemGetResponseDto request)
     {
         ToDoItem? itemToGet;
         try
@@ -113,6 +113,8 @@ public class ToDoItemsController : ControllerBase
         }
         return NoContent();//204
     }
+
+    public OkObjectResult ReadById(int v) => throw new NotImplementedException();
 }
 
 

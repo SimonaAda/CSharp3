@@ -27,12 +27,7 @@ public class UpdateTests
         };
         ToDoItemsController.items.Add(toDoItem);
 
-        var updatedItem = new ToDoItemUpdateRequestDto
-        {
-            Name = "Updated Jmeno",
-            Description = "Updated Popis",
-            IsCompleted = true
-        };
+        var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true);
 
         // Act
         var result = controller.UpdateById(1, updatedItem);
@@ -58,12 +53,7 @@ public class UpdateTests
         };
         ToDoItemsController.items.Add(toDoItem);
 
-        var updatedItem = new ToDoItemUpdateRequestDto
-        {
-            Name = "Updated Jmeno",
-            Description = "Updated Popis",
-            IsCompleted = true
-        };
+        var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true);
 
         // Act
         var result = controller.UpdateById(99, updatedItem);

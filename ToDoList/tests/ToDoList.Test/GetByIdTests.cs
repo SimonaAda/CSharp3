@@ -1,13 +1,10 @@
 namespace ToDoList.Test;
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.WebApi.Controllers;
-using System.Formats.Asn1;
-using NuGet.Frameworks;
+
 
 public class GetByIdTests
 {
@@ -60,11 +57,10 @@ public class GetByIdTests
 
         // Act
         var result = controller.ReadById(99);
-        var notFoundResult = result as NotFoundResult;
 
         // Assert
-        Assert.IsType<NotFoundResult>(notFoundResult);
-        Assert.NotNull(notFoundResult);
+        Assert.IsType<NotFoundResult>(result);
+        Assert.NotNull(result);
 
     }
 }
