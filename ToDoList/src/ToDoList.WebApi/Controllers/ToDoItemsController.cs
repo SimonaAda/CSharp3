@@ -30,7 +30,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Read(ToDoItemGetResponseDto request)
+    public IActionResult Read()
     {
         List<ToDoItem> itemsToGet;
         try

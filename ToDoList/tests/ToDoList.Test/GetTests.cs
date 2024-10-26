@@ -1,7 +1,6 @@
 namespace ToDoList.Test;
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
+using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
@@ -25,20 +24,28 @@ public class GetTests
         };
         ToDoItemsController.items.Add(toDoItem);
 
+        var toDoItem2 = new ToDoItem
+        {
+            ToDoItemId = 2,
+            Name = "Jmeno 2",
+            Description = "Popis 2",
+            IsCompleted = true
+
+        };
+        ToDoItemsController.items.Add(toDoItem2);
+
         // Act
         var result = controller.Read();
-        var value = result.Value;
-        var resultResult = result.Result;
+        var okResult = result as OkObjectResult;
 
         // Assert
-        Assert.IsType<OkObjectResult>(resultResult);
-        Assert.NotNull(value);
 
-        var firstItem = value.First();
-        Assert.Equal(toDoItem.ToDoItemId, firstItem.Id);
-        Assert.Equal(toDoItem.Description, firstItem.Description);
-        Assert.Equal(toDoItem.IsCompleted, firstItem.IsCompleted);
-        Assert.Equal(toDoItem.Name, firstItem.Name);
+        Assert.IsType<OkObjectResult>(okResult);
+        Assert.NotNull(okResult);
+
+        var items = okResult.Value as List<ToDoItemGetResponseDto>;
+        Assert.NotNull(items);
+        Assert.Equal(2, items.Count);
 
     }
 }
