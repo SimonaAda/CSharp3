@@ -2,13 +2,21 @@ namespace ToDoList.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 
 [ApiController]
 [Route("api/[controller]")]
 
 public class ToDoItemsController : ControllerBase
 {
-    public static List<ToDoItem> items = [];
+    public readonly List<ToDoItem> items = [];
+    private readonly ToDoItemsContext context;
+
+    public ToDoItemsController(ToDoItemsContext context)
+    {
+        this.context = context;
+    }
+
 
     [HttpPost]
     public IActionResult Create(ToDoItemCreateRequestDto request)
