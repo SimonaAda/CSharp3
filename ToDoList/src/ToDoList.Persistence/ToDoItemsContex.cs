@@ -1,11 +1,17 @@
 ﻿namespace ToDoList.Persistence;
 
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 using ToDoList.Domain.Models;
 
-public class ToDoItemsContext(string connectionString = "Data Source=../../data/localdb.db") : DbContext
+public class ToDoItemsContext : DbContext
 {
-    private readonly string connectionString = connectionString;
+    private readonly string connectionString;
+
+    public ToDoItemsContext(string connectionString = "Data Source=../../data/localdb.db")
+    {
+        this.connectionString = connectionString;
+        this.Database.Migrate();
+    }
 
     public DbSet<ToDoItem> ToDoItems { get; set; }
 
