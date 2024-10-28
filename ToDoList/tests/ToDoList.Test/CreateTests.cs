@@ -2,6 +2,7 @@ namespace ToDoList.Test;
 
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
+using ToDoList.Persistence;
 using ToDoList.WebApi.Controllers;
 using Xunit;
 
@@ -12,8 +13,8 @@ public class CreateTests
     public void Create_WhenItemIsCreated()
     {
         // Arrange
-        var controller = new ToDoItemsController();
-        ToDoItemsController.items = [];
+        var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
+        var controller = new ToDoItemsController(context);
 
         var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Popis", false);
 
@@ -25,8 +26,8 @@ public class CreateTests
         Assert.IsType<CreatedAtActionResult>(createdAtActionResult);
         Assert.NotNull(createdAtActionResult);
         Assert.Equal(201, createdAtActionResult.StatusCode);
-        Assert.Single(ToDoItemsController.items);
-        Assert.Equal("new Jmeno", ToDoItemsController.items[0].Name);
+        Assert.Single(controller.items);
+        Assert.Equal("new Jmeno", controller.items[0].Name);
     }
 
 }

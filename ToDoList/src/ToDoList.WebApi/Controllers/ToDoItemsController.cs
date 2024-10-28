@@ -9,7 +9,7 @@ using ToDoList.Persistence;
 
 public class ToDoItemsController : ControllerBase
 {
-    public readonly List<ToDoItem> items = [];
+
     private readonly ToDoItemsContext context;
 
     public ToDoItemsController(ToDoItemsContext context)
@@ -24,8 +24,8 @@ public class ToDoItemsController : ControllerBase
         var item = request.ToDomain();
         try
         {
-            item.ToDoItemId = items.Count == 0 ? 1 : items.Max(o => o.ToDoItemId) + 1;
-            items.Add(item);
+            context.ToDoItems.Add(item);
+            context.SaveChanges();
         }
         catch(Exception ex)
         {
@@ -40,31 +40,31 @@ public class ToDoItemsController : ControllerBase
     [HttpGet]
     public IActionResult Read()
     {
-        List<ToDoItem> itemsToGet;
         try
         {
-            if (items == null)
+            var itemsToGet = context.ToDoItems.ToList();
+
+            if (itemsToGet == null)
             {
                 return NotFound();
             }
-            itemsToGet = items;
+
         }
 
         catch (Exception ex)
         {
             return this.Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }
-        return Ok(itemsToGet.Select(ToDoItemGetResponseDto.FromDomain));
+        return Ok(context.ToDoItems.Select(ToDoItemGetResponseDto.FromDomain));
 
     }
 
     [HttpGet("{toDoItemId:int}")]
     public IActionResult ReadById(int toDoItemId, ToDoItemGetResponseDto request)
     {
-        ToDoItem? itemToGet;
         try
         {
-            itemToGet = items.Find(i => i.ToDoItemId == toDoItemId);
+            var itemToGet = context.ToDoItems.Find(toDoItemId);
             if (itemToGet == null)
             {
                 return NotFound();
@@ -85,14 +85,14 @@ public class ToDoItemsController : ControllerBase
 
         try //try to update the item by retrieving it with given id
         {
-            var currentItemIndex = items.FindIndex(i => i.ToDoItemId == toDoItemId);
+            var currentItem = context.ToDoItems.Find(toDoItemId);
 
-            if (currentItemIndex == -1)
+            if (currentItem == null)
             {
                 return NotFound();
             }
             updatedItem.ToDoItemId = toDoItemId;
-            items[currentItemIndex] = updatedItem;
+            context.SaveChanges();
 
             return NoContent();
         }
@@ -107,13 +107,14 @@ public class ToDoItemsController : ControllerBase
     {
         try
         {
-            var itemToDelete = items.Find(item => item.ToDoItemId == toDoItemId);
+            var itemToDelete = context.ToDoItems.Find(toDoItemId);
 
             if (itemToDelete == null)
             {
                 return NotFound(); //404
             }
-            items.Remove(itemToDelete);
+            context.ToDoItems.Remove(itemToDelete);
+            context.SaveChanges();
         }
         catch (Exception ex)
         {
@@ -122,7 +123,6 @@ public class ToDoItemsController : ControllerBase
         return NoContent();//204
     }
 
-    public OkObjectResult ReadById(int v) => throw new NotImplementedException();
 }
 
 
