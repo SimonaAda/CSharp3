@@ -60,7 +60,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet("{toDoItemId:int}")]
-    public IActionResult ReadById(int toDoItemId, ToDoItemGetResponseDto request)
+    public IActionResult ReadById(int toDoItemId, ToDoItemGetResponseDto request) //nefunguje kontroler ocekava ze dostane ToDoItemGetResponseDto v body http get requestu, ale to neposilame => nezna takovy request
     {
         try
         {
@@ -91,6 +91,12 @@ public class ToDoItemsController : ControllerBase
             {
                 return NotFound();
             }
+            /*nefunguje, pojdme si projit co tvuj kod dela
+            1) najdes si v context item co ma dane id a mas to jako lokalni projenou currentItem - to je OK :)
+            2) zkontolujes si ze jsi nasla dany item - to je OK :)
+            3) objektu updatedItem priradis ID
+            4) ulozis zmeny do databaze - akorat tady se zadne nestaly
+            */
             updatedItem.ToDoItemId = toDoItemId;
             context.SaveChanges();
 
