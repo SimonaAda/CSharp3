@@ -1,10 +1,10 @@
 namespace ToDoList.Test;
 
-using Microsoft.AspNetCore.Authentication; //zbytecne
-using Microsoft.AspNetCore.Mvc.Diagnostics; //zbytecne
+using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 using ToDoList.WebApi.Controllers;
 
 public class GetTests
@@ -14,8 +14,8 @@ public class GetTests
     public void Get_AllItems_ReturnsAllItems()
     {
         // Arrange
-        var controller = new ToDoItemsController();
-        ToDoItemsController.items = [];
+        var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
+        var controller = new ToDoItemsController(context);
         var toDoItem = new ToDoItem
         {
             ToDoItemId = 1,
@@ -23,22 +23,30 @@ public class GetTests
             Description = "Popis",
             IsCompleted = false
         };
-        ToDoItemsController.items.Add(toDoItem);
+        controller.items.Add(toDoItem);
+
+        var toDoItem2 = new ToDoItem
+        {
+            ToDoItemId = 2,
+            Name = "Jmeno 2",
+            Description = "Popis 2",
+            IsCompleted = true
+
+        };
+        controller.items.Add(toDoItem2);
 
         // Act
         var result = controller.Read();
-        var value = result.Value;
-        var resultResult = result.Result;
+        var okResult = result as OkObjectResult;
 
         // Assert
-        Assert.IsType<OkObjectResult>(resultResult);
-        Assert.NotNull(value);
 
-        var firstItem = value.First(); //neprochazi to, tady nas zloby ty problemy co byly na lekci, doporucuji si vratit to aby Read metoda vracela IActionResult, je to pak jednodussi :)
-        Assert.Equal(toDoItem.ToDoItemId, firstItem.Id);
-        Assert.Equal(toDoItem.Description, firstItem.Description);
-        Assert.Equal(toDoItem.IsCompleted, firstItem.IsCompleted);
-        Assert.Equal(toDoItem.Name, firstItem.Name);
+        Assert.IsType<OkObjectResult>(okResult);
+        Assert.NotNull(okResult);
+
+        var items = okResult.Value as List<ToDoItemGetResponseDto>;
+        Assert.NotNull(items);
+        Assert.Equal(2, items.Count);
 
         //spis by to chtelo test ze pokud mame v items 3 ukoly, tak dostanu 3 ukoly z Read akce - muze to vracet nespravny pocet
 

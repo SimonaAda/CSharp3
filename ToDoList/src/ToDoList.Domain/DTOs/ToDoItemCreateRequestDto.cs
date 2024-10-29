@@ -5,4 +5,3 @@ public record ToDoItemCreateRequestDto(string Name, string Description, bool IsC
 {
     public ToDoItem ToDomain() => new() { Name = Name, Description = Description, IsCompleted = IsCompleted };
 }
-

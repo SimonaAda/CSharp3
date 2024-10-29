@@ -1,13 +1,11 @@
 namespace ToDoList.Test;
 
-using Microsoft.AspNetCore.Authentication; //zbytecne
-using Microsoft.AspNetCore.Mvc.Diagnostics; //zbytecne
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 using ToDoList.WebApi.Controllers;
-using System.Formats.Asn1; //zbytecne
-using NuGet.Frameworks; //zbytecne
+
 
 public class GetByIdTests
 {
@@ -16,8 +14,8 @@ public class GetByIdTests
     public void Get_ById_OkResult_WhenValid()
     {
         // Arrange
-        var controller = new ToDoItemsController();
-        ToDoItemsController.items = [];
+        var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
+        var controller = new ToDoItemsController(context);
         var toDoItem = new ToDoItem
         {
             ToDoItemId = 1,
@@ -25,7 +23,7 @@ public class GetByIdTests
             Description = "Popis", //slo by to parametrizovat
             IsCompleted = false //slo by to parametrizovat
         };
-        ToDoItemsController.items.Add(toDoItem);
+        controller.items.Add(toDoItem);
 
         // Act
         var result = controller.ReadById(1);
@@ -47,24 +45,23 @@ public class GetByIdTests
     public void Get_ById_NotFound_WhenInvalid()
     {
         //Arrange
-        var controller = new ToDoItemsController();
-        ToDoItemsController.items = [];
-        var toDoItem = new ToDoItem //nema vliv na test, zbytecne to prodluzuje delku kodu
+        var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
+        var controller = new ToDoItemsController(context);
+        var toDoItem = new ToDoItem
         {
             ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
             IsCompleted = false
         };
-        ToDoItemsController.items.Add(toDoItem); //nema vliv na test, zbytecne to prodluzuje delku kodu
+        controller.items.Add(toDoItem);
 
         // Act
         var result = controller.ReadById(99);
-        var notFoundResult = result as NotFoundResult;
 
         // Assert
-        Assert.IsType<NotFoundResult>(notFoundResult);
-        Assert.NotNull(notFoundResult);
+        Assert.IsType<NotFoundResult>(result);
+        Assert.NotNull(result);
 
     }
 }
