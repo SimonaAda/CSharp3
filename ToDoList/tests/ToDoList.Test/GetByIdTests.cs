@@ -19,9 +19,9 @@ public class GetByIdTests
         var toDoItem = new ToDoItem
         {
             ToDoItemId = 1,
-            Name = "Jmeno", //slo by to parametrizovat
-            Description = "Popis", //slo by to parametrizovat
-            IsCompleted = false //slo by to parametrizovat
+            Name = "Jmeno",
+            Description = "Popis",
+            IsCompleted = false
         };
         controller.items.Add(toDoItem);
 

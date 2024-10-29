@@ -27,7 +27,7 @@ public class ToDoItemsController : ControllerBase
             context.ToDoItems.Add(item);
             context.SaveChanges();
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             return this.Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }

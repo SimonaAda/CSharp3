@@ -48,8 +48,6 @@ public class GetTests
         Assert.NotNull(items);
         Assert.Equal(2, items.Count);
 
-        //spis by to chtelo test ze pokud mame v items 3 ukoly, tak dostanu 3 ukoly z Read akce - muze to vracet nespravny pocet
-
     }
 }
 
