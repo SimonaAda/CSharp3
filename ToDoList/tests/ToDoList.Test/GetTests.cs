@@ -1,10 +1,9 @@
 namespace ToDoList.Test;
 
-using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
-using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 
 public class GetTests
@@ -14,8 +13,8 @@ public class GetTests
     public void Get_AllItems_ReturnsAllItems()
     {
         // Arrange
-        var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context);
+        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var controller = new ToDoItemsController(repositoryMock);
         var toDoItem = new ToDoItem
         {
             ToDoItemId = 1,
@@ -23,17 +22,6 @@ public class GetTests
             Description = "Popis",
             IsCompleted = false
         };
-        controller.items.Add(toDoItem);
-
-        var toDoItem2 = new ToDoItem
-        {
-            ToDoItemId = 2,
-            Name = "Jmeno 2",
-            Description = "Popis 2",
-            IsCompleted = true
-
-        };
-        controller.items.Add(toDoItem2);
 
         // Act
         var result = controller.Read();
