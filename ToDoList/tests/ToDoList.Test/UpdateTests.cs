@@ -1,14 +1,11 @@
 namespace ToDoList.Test;
 
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.WebApi.Controllers;
 using ToDoList.Persistence;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Runtime.CompilerServices;
+
 
 public class UpdateTests
 {
@@ -38,7 +35,8 @@ public class UpdateTests
         // Assert
         Assert.IsType<NoContentResult>(result);
         Assert.Single(controller.items);
-        Assert.Equal("Updated Jmeno", controller.items.First().Name);
+        Assert.Equal(updatedItem.Name, controller.items.First().Name);
+        Assert.Equal(updatedItem.Description, controller.items.First());
         Assert.True(controller.items.First().IsCompleted);
     }
 

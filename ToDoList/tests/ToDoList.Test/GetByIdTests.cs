@@ -7,6 +7,7 @@ using ToDoList.Persistence;
 using ToDoList.WebApi.Controllers;
 
 
+
 public class GetByIdTests
 {
 
@@ -18,10 +19,7 @@ public class GetByIdTests
         var controller = new ToDoItemsController(context);
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1,
-            Name = "Jmeno",
-            Description = "Popis",
-            IsCompleted = false
+            ToDoItemId = 1
         };
         controller.items.Add(toDoItem);
 
@@ -47,15 +45,6 @@ public class GetByIdTests
         //Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
         var controller = new ToDoItemsController(context);
-        var toDoItem = new ToDoItem
-        {
-            ToDoItemId = 1,
-            Name = "Jmeno",
-            Description = "Popis",
-            IsCompleted = false
-        };
-        controller.items.Add(toDoItem);
-
         // Act
         var result = controller.ReadById(99);
 
