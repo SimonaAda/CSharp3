@@ -11,11 +11,11 @@ using ToDoList.Persistence.Repositories;
 public class ToDoItemsController : ControllerBase
 {
 
-    private readonly ToDoItemsContext context;
+    private readonly ToDoItemsContext context; //uz nepotrebujeme
     private readonly IRepository<ToDoItem> repository;
 
 
-    public ToDoItemsController(ToDoItemsContext context, IRepository<ToDoItem> repository)
+    public ToDoItemsController(ToDoItemsContext context, IRepository<ToDoItem> repository) //uz nepotrebujeme context
     {
         this.context = context;
         this.repository = repository;
@@ -99,6 +99,8 @@ public class ToDoItemsController : ControllerBase
             currentItem.Name = updatedItem.Name;
             currentItem.Description = updatedItem.Description;
 
+            //ted se to kvuli tomuto radku chova jako Create Metoda :)
+            //musis pouzit currentItem - ten koneckoncu updatujes
             repository.Update(updatedItem);
 
             return NoContent();

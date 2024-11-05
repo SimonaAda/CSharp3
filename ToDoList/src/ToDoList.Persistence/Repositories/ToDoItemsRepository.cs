@@ -35,6 +35,8 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
         context.SaveChanges();
     }
 
+    //pokud budeme pracovat s ToDoItemsRepository pres interface IRepository<ToDoItem>, tak ten nezna tuto metodu
+    //interface zna pouze public void Delete(T item) - cili public void Delete(ToDoItem item);
     public void Delete(int toDoItemId)
     {
         var itemToDelete = context.ToDoItems.Find(toDoItemId);
