@@ -1,10 +1,11 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.IntegrationTests;
 
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
+using ToDoList.Persistence;
+using ToDoList.Domain.DTOs;
 
 public class GetTests
 {
@@ -13,8 +14,10 @@ public class GetTests
     public void Get_AllItems_ReturnsAllItems()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        var controller = new ToDoItemsController(repositoryMock);
+        var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
+
         var toDoItem = new ToDoItem
         {
             ToDoItemId = 1,
@@ -22,19 +25,21 @@ public class GetTests
             Description = "Popis",
             IsCompleted = false
         };
+        context.ToDoItems.Add(toDoItem);
+        context.SaveChanges();
 
         // Act
         var result = controller.Read();
         var okResult = result as OkObjectResult;
 
         // Assert
-
         Assert.IsType<OkObjectResult>(okResult);
         Assert.NotNull(okResult);
 
-        var items = okResult.Value as List<ToDoItemGetResponseDto>;
-        Assert.NotNull(items);
-        Assert.Equal(2, items.Count);
+        var item = okResult.Value as List<ToDoItemGetResponseDto>;
+
+        Assert.NotNull(item);
+        Assert.Equal(toDoItem.ToDoItemId, item.Count);
 
     }
 }

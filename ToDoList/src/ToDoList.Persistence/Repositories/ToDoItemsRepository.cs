@@ -26,18 +26,19 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
 
     public ToDoItem ReadById(int toDoItemId)
     {
+
         return context.ToDoItems.Find(toDoItemId);
     }
 
-    public void Update(ToDoItem updatedItem)
+    public void Update(ToDoItem item)
     {
-        context.ToDoItems.Update(updatedItem);
+        context.ToDoItems.Update(item);
         context.SaveChanges();
     }
 
-    public void Delete(int toDoItemId)
+    public void Delete(ToDoItem item)
     {
-        var itemToDelete = context.ToDoItems.Find(toDoItemId);
+        var itemToDelete = context.ToDoItems.Find(item);
 
         if (itemToDelete != null)
         {
@@ -45,6 +46,4 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
             context.SaveChanges();
         }
     }
-
-    public void Delete(ToDoItem itemToDelete) => throw new NotImplementedException();
 }

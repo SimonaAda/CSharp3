@@ -11,19 +11,17 @@ using ToDoList.Persistence.Repositories;
 public class ToDoItemsController : ControllerBase
 {
 
-    private readonly ToDoItemsContext context;
     private readonly IRepository<ToDoItem> repository;
 
 
-    public ToDoItemsController(ToDoItemsContext context, IRepository<ToDoItem> repository)
+    public ToDoItemsController (IRepository<ToDoItem> repository)
     {
-        this.context = context;
         this.repository = repository;
     }
 
 
     [HttpPost]
-    public IActionResult Create(ToDoItemCreateRequestDto request)
+    public ActionResult<ToDoItemGetResponseDto> Create(ToDoItemCreateRequestDto request)
     {
         var item = request.ToDomain();
         try
@@ -99,7 +97,7 @@ public class ToDoItemsController : ControllerBase
             currentItem.Name = updatedItem.Name;
             currentItem.Description = updatedItem.Description;
 
-            repository.Update(updatedItem);
+            repository.Update(currentItem);
 
             return NoContent();
         }

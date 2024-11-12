@@ -1,9 +1,10 @@
-namespace ToDoList.Test;
+namespace ToDoList.Test.IntegrationTests;
 
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 
 
@@ -16,14 +17,19 @@ public class GetByIdTests
     {
         // Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context);
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1
+            Name = "Jmeno",
+            Description = "Popis",
+            IsCompleted = false
         };
-        controller.items.Add(toDoItem);
 
-        // Act
+       context.ToDoItems.Add(toDoItem);
+       context.SaveChanges();
+
+        //Act
         var result = controller.ReadById(1);
         var okResult = result as OkObjectResult;
 
@@ -39,12 +45,13 @@ public class GetByIdTests
 
     }
 
-    [Fact]
+   [Fact]
     public void Get_ById_NotFound_WhenInvalid()
     {
         //Arrange
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context);
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
         // Act
         var result = controller.ReadById(99);
 

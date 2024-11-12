@@ -10,9 +10,9 @@ public interface IRepository<T> where T : class
 
     ToDoItem ReadById(int toDoItemId);
 
-    public void Update(T updatedItem);
+    public void Update(T item);
 
-    public void Delete(T itemToDelete);
+    public void Delete(T item);
 
 }
 

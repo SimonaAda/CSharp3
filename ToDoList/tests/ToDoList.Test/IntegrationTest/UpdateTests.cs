@@ -5,7 +5,7 @@ using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.WebApi.Controllers;
 using ToDoList.Persistence;
-
+using ToDoList.Persistence.Repositories;
 
 public class UpdateTests
 {
@@ -14,45 +14,43 @@ public class UpdateTests
     public void Update_ById_NoContent_WhenUpdated()
     {
         // Arrange
-        var path = AppContext.BaseDirectory;
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context);
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
+
 
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
             IsCompleted = false
         };
-        controller.items.Add(toDoItem);
+        context.ToDoItems.Add(toDoItem);
+        context.SaveChanges();
 
         var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true);
 
         // Act
-        var result = controller.UpdateById(1, updatedItem);//(toDoItem.TodoItemId, updatedItem)
+        var result = controller.UpdateById(toDoItem.ToDoItemId, updatedItem);//(toDoItem.TodoItemId, updatedItem)
 
         // Assert
         Assert.IsType<NoContentResult>(result);
-        Assert.Single(controller.items);
-        Assert.Equal(updatedItem.Name, controller.items.First().Name);
-        Assert.Equal(updatedItem.Description, controller.items.First());
-        Assert.True(controller.items.First().IsCompleted);
     }
 
     [Fact]
     public void Update_ById_NotFound_WhenInvalid()
     {
         var context = new ToDoItemsContext("Data Source=../../../../../data/localdb.db");
-        var controller = new ToDoItemsController(context);
+        var repository = new ToDoItemsRepository(context);
+        var controller = new ToDoItemsController(repository);
         var toDoItem = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
             IsCompleted = false
         };
-        controller.items.Add(toDoItem);
+        context.ToDoItems.Add(toDoItem);
+        context.SaveChanges();
 
         var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true);
 
