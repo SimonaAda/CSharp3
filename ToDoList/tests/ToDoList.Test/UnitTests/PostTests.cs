@@ -34,6 +34,7 @@ public class PostUnitTests
         Assert.Equal(newItem.Name, value.Name);
     }
 
+    [Fact] //chybelo to tady :) musime timto oznacit testy, jinak je to vlastne jenom nejaka metoda
     public void Post_CreateUnhandledException_ReturnsInternalServerError()
     {
         // Arrange
@@ -42,7 +43,7 @@ public class PostUnitTests
         var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Description", false);
 
         repositoryMock.When(r => r.Create(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
-
+        //muzeme repositoryMock.When(r => r.Create(Arg.Any<ToDoItem>())).Throw(new Exception()); ale taky tohle jde :)
         // Act
 
         var result = controller.Create(newItem);

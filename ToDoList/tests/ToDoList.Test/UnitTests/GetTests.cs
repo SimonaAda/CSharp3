@@ -35,6 +35,7 @@ public class GetUnitTests
         // Assert
         Assert.IsType<OkObjectResult>(okResult);
         repositoryMock.Received(1).Read();
+        //jeste by to chtelo check ze jsme dostali zpatky nejaky iterovatelny objekt ktery v sobe ma tolik itemu kolik jich ocekavame podle mocku :)
     }
 
     [Fact]

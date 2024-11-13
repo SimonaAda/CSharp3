@@ -85,7 +85,7 @@ public class PutUnitTests
         };
 
         repositoryMock.ReadById(toDoItem.ToDoItemId).Returns(toDoItem);
-        repositoryMock.When(r => r.Update(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
+        repositoryMock.When(r => r.Update(Arg.Any<ToDoItem>())).Do(r => throw new Exception()); //opet muzeme pres Throw, ale jde to i takto obecne :)
 
         var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true);
 
