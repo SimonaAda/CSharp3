@@ -1,0 +1,21 @@
+﻿@page "/AhojSvete"
+
+<PageTitle>@title</PageTitle>
+
+<h1>@ahojSvete</h1>
+
+@Pozdrav()
+
+Piseme neco<br>
+Piseme zase neco
+
+@code
+{
+    string title = "moje stránka";
+    string ahojSvete = "Ahoj světe z jiné stránky!";
+
+    string Pozdrav()
+    {
+        return "Vítej v mojí aplikaci";
+    }
+}
