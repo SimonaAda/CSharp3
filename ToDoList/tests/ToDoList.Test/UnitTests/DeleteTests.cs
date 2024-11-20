@@ -25,7 +25,7 @@ public class DeleteUnitTests
             Description = "Popis",
             IsCompleted = false
         };
-
+        //mohli bychom to nastavit aby to reagovalo pouze pro ReadById(toDoItem.ToDoItemId), ale tohle taky muze byt :)
         repositoryMock.ReadById(Arg.Any<int>()).Returns(toDoItem);
 
         //Act

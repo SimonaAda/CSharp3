@@ -41,7 +41,7 @@ public class ReadByIdUnitTests
         Assert.Equal(toDoItem.Name, item.Name);
         Assert.Equal(toDoItem.Description, item.Description);
         Assert.False(item.IsCompleted);
-        repositoryMock.Received(Arg.Any<int>()).Read();
+        repositoryMock.Received(Arg.Any<int>()).Read(); //proc tady kontrolujeme Read? Testujeme ReadById :)
 
     }
 
