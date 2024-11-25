@@ -24,10 +24,11 @@ public class PutUnitTests
             ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
-            IsCompleted = false
+            IsCompleted = false,
+            Category = "Kategorie"
         };
 
-        var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true);
+        var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true, "Updated Kategorie");
 
         repositoryMock.ReadById(toDoItem.ToDoItemId).Returns(toDoItem);
 
@@ -49,10 +50,11 @@ public class PutUnitTests
         {
             Name = "Jmeno",
             Description = "Popis",
-            IsCompleted = false
+            IsCompleted = false,
+            Category = "Kategorie"
         };
 
-        var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true);
+        var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true, "Updated Kategorie");
 
         repositoryMock.ReadById(99).Returns((ToDoItem)null);
 
@@ -87,7 +89,7 @@ public class PutUnitTests
         repositoryMock.ReadById(toDoItem.ToDoItemId).Returns(toDoItem);
         repositoryMock.When(r => r.Update(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
 
-        var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true);
+        var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true, "Updated Kategorie");
 
         // Act
         var result = controller.UpdateById(toDoItem.ToDoItemId, updatedItem);//(toDoItem.TodoItemId, updatedItem)

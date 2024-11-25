@@ -1,6 +1,6 @@
 namespace ToDoList.Test;
 
-public class UnitTest1
+/*public class UnitTest1
 {
     [Fact]
     public void Divide_WithoutRemainder_ReturnCorrectNumbe_Parametrized(int value1, int value2)
@@ -30,5 +30,4 @@ public class Calculator
     {
         return divident / divisor;
     }
-}
-
+}*/

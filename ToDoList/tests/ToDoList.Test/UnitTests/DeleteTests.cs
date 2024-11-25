@@ -23,7 +23,8 @@ public class DeleteUnitTests
             ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
-            IsCompleted = false
+            IsCompleted = false,
+            Category = "Kategorie"
         };
 
         repositoryMock.ReadById(Arg.Any<int>()).Returns(toDoItem);
@@ -69,7 +70,8 @@ public class DeleteUnitTests
             ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
-            IsCompleted = false
+            IsCompleted = false,
+            Category = "Kategorie"
         };
 
         repositoryMock.ReadById(Arg.Any<int>()).Throws(new Exception());

@@ -23,7 +23,8 @@ public class ReadByIdUnitTests
             ToDoItemId = 1,
             Name = "Jmeno",
             Description = "Popis",
-            IsCompleted = false
+            IsCompleted = false,
+            Category = "Kategorie"
         };
 
         repositoryMock.ReadById(Arg.Any<int>()).Returns(toDoItem);
@@ -41,6 +42,7 @@ public class ReadByIdUnitTests
         Assert.Equal(toDoItem.Name, item.Name);
         Assert.Equal(toDoItem.Description, item.Description);
         Assert.False(item.IsCompleted);
+        Assert.Equal(toDoItem.Category, item.Category);
         repositoryMock.Received(Arg.Any<int>()).Read();
 
     }

@@ -17,7 +17,7 @@ public class PostUnitTests
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
-        var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Popis", false);
+        var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Popis", false, "new Kategorie");
 
         //Act
         var result = controller.Create(newItem);
@@ -32,6 +32,7 @@ public class PostUnitTests
         Assert.Equal(newItem.Description, value.Description);
         Assert.Equal(newItem.IsCompleted, value.IsCompleted);
         Assert.Equal(newItem.Name, value.Name);
+        Assert.Equal(newItem.Category, value.Category);
     }
 
     public void Post_CreateUnhandledException_ReturnsInternalServerError()
@@ -39,7 +40,7 @@ public class PostUnitTests
         // Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Description", false);
+        var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Popis", false, "new Kategorie");
 
         repositoryMock.When(r => r.Create(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
 

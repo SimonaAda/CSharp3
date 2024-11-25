@@ -96,6 +96,8 @@ public class ToDoItemsController : ControllerBase
 
             currentItem.Name = updatedItem.Name;
             currentItem.Description = updatedItem.Description;
+            currentItem.IsCompleted = updatedItem.IsCompleted;
+            currentItem.Category = updatedItem.Category;
 
             repository.Update(currentItem);
 
