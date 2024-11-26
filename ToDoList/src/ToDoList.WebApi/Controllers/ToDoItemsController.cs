@@ -62,6 +62,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet("{toDoItemId:int}")]
+    [ActionName(nameof(ReadByIdAsync))]
     public async Task<IActionResult> ReadByIdAsync(int toDoItemId)
     {
         try
