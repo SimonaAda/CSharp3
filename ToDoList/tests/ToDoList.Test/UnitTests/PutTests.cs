@@ -13,10 +13,10 @@ using Microsoft.VisualStudio.TestPlatform.CrossPlatEngine.Helpers;
 public class PutUnitTests
 {
     [Fact]
-    public void Put_UpdateByIdWhenItemUpdated_ReturnsNoContent()
+    public async Task Put_UpdateByIdWhenItemUpdated_ReturnsNoContent()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
         var toDoItem = new ToDoItem
@@ -30,20 +30,20 @@ public class PutUnitTests
 
         var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true, "Updated Kategorie");
 
-        repositoryMock.ReadById(toDoItem.ToDoItemId).Returns(toDoItem);
+        repositoryMock.ReadByIdAsync(toDoItem.ToDoItemId).Returns(toDoItem);
 
         // Act
-        var result = controller.UpdateById(toDoItem.ToDoItemId, updatedItem);//(toDoItem.TodoItemId, updatedItem)
+        var result = await controller.UpdateByIdAsync(toDoItem.ToDoItemId, updatedItem);//(toDoItem.TodoItemId, updatedItem)
 
         // Assert
         Assert.IsType<NoContentResult>(result);
     }
 
     [Fact]
-    public void Put_UpdateByIdWhenIdNotFound_ReturnsNotFound()
+    public async Task Put_UpdateByIdWhenIdNotFound_ReturnsNotFound()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
         var toDoItem = new ToDoItem
@@ -56,26 +56,26 @@ public class PutUnitTests
 
         var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true, "Updated Kategorie");
 
-        repositoryMock.ReadById(99).Returns((ToDoItem)null);
+        repositoryMock.ReadByIdAsync(99).Returns((ToDoItem)null);
 
         // Act
-        var result = controller.UpdateById(99, updatedItem);//ivaldiID = 99,(invalidId, updatedID)
+        var result = await controller.UpdateByIdAsync(99, updatedItem);//ivaldiID = 99,(invalidId, updatedID)
         var notFoundResult = result as NotFoundResult;
 
         // Assert
         Assert.IsType<NotFoundResult>(notFoundResult);
         Assert.NotNull(notFoundResult);
-        repositoryMock.Received(1).ReadById(99);
-        repositoryMock.DidNotReceive().Update(Arg.Any<ToDoItem>());
+        await repositoryMock.Received(1).ReadByIdAsync(99);
+        await repositoryMock.DidNotReceive().UpdateAsync(Arg.Any<ToDoItem>());
 
 
     }
 
     [Fact]
-    public void Put_UpdateByIdUnhandledException_ReturnsInternalServerError()
+    public async Task Put_UpdateByIdUnhandledException_ReturnsInternalServerError()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
         var toDoItem = new ToDoItem
@@ -86,17 +86,18 @@ public class PutUnitTests
             IsCompleted = false
         };
 
-        repositoryMock.ReadById(toDoItem.ToDoItemId).Returns(toDoItem);
-        repositoryMock.When(r => r.Update(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
+        repositoryMock.ReadByIdAsync(toDoItem.ToDoItemId).Returns(toDoItem);
+
+        repositoryMock.When(r => r.UpdateAsync(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
 
         var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true, "Updated Kategorie");
 
         // Act
-        var result = controller.UpdateById(toDoItem.ToDoItemId, updatedItem);//(toDoItem.TodoItemId, updatedItem)
+        var result = await controller.UpdateByIdAsync(toDoItem.ToDoItemId, updatedItem);//(toDoItem.TodoItemId, updatedItem)
 
         // Assert
         Assert.IsType<ObjectResult>(result);
-        repositoryMock.Received(1).ReadById(toDoItem.ToDoItemId);
+        await repositoryMock.Received(1).ReadByIdAsync(toDoItem.ToDoItemId);
         Assert.Equivalent(new StatusCodeResult(StatusCodes.Status500InternalServerError), result);
     }
 }
