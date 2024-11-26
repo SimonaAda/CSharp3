@@ -40,10 +40,10 @@ public class ReadByIdUnitTests
         Assert.NotNull(item);
         Assert.Equal(toDoItem.ToDoItemId, item.Id);
         Assert.Equal(toDoItem.Name, item.Name);
-        Assert.Equal(toDoItem.Description, item.Description); 
+        Assert.Equal(toDoItem.Description, item.Description);
         Assert.False(item.IsCompleted);
         Assert.Equal(toDoItem.Category, item.Category);
-        await repositoryMock.Received(Arg.Any<int>()).ReadByIdAsync(toDoItem.ToDoItemId);
+        await repositoryMock.Received(1).ReadByIdAsync(toDoItem.ToDoItemId);
 
     }
 
