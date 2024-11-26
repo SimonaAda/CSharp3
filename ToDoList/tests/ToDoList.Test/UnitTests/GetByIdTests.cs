@@ -40,9 +40,11 @@ public class ReadByIdUnitTests
         Assert.NotNull(item);
         Assert.Equal(toDoItem.ToDoItemId, item.Id);
         Assert.Equal(toDoItem.Name, item.Name);
-        Assert.Equal(toDoItem.Description, item.Description); 
+        Assert.Equal(toDoItem.Description, item.Description);
         Assert.False(item.IsCompleted);
         Assert.Equal(toDoItem.Category, item.Category);
+
+        //timto checkem rikas ze chces zkontrolovat ze pocet volani ReadByIdAsync je libovolny int :( 
         await repositoryMock.Received(Arg.Any<int>()).ReadByIdAsync(toDoItem.ToDoItemId);
 
     }
