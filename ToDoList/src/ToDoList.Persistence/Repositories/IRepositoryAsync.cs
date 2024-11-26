@@ -13,6 +13,6 @@ public interface IRepositoryAsync<T> where T : class
 
     public Task UpdateAsync(T item);
 
-    public Task DeleteAsync(T item);
+    public Task DeleteAsync(int toDoItemId);
 
 }

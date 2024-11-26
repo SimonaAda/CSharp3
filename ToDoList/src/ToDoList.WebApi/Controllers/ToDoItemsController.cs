@@ -121,7 +121,7 @@ public class ToDoItemsController : ControllerBase
                 return NotFound(); //404
             }
 
-            await repository.DeleteAsync(itemToDelete);
+            await repository.DeleteAsync(toDoItemId);
             return NoContent();//204
 
         }

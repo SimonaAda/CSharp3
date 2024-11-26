@@ -88,7 +88,7 @@ public class PutUnitTests
 
         repositoryMock.ReadByIdAsync(toDoItem.ToDoItemId).Returns(toDoItem);
 
-        repositoryMock.When(r => r.UpdateAsync(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
+        repositoryMock.When(r => r.UpdateAsync(Arg.Any<ToDoItem>())).Throw (new Exception());
 
         var updatedItem = new ToDoItemUpdateRequestDto("Updated Jmeno", "Updated Popis", true, "Updated Kategorie");
 

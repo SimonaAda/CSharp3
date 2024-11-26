@@ -43,7 +43,7 @@ public class PostUnitTests
         var controller = new ToDoItemsController(repositoryMock);
         var newItem = new ToDoItemCreateRequestDto("new Jmeno", "new Popis", false, "new Kategorie");
 
-        repositoryMock.When(r => r.CreateAsync(Arg.Any<ToDoItem>())).Do(r => throw new Exception());
+        repositoryMock.When(r => r.CreateAsync(Arg.Any<ToDoItem>())).Throw (new Exception());
 
         // Act
 

@@ -8,6 +8,7 @@ using ToDoList.Persistence.Repositories;
 using ToDoList.WebApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using NSubstitute.ExceptionExtensions;
+using System.Security.Principal;
 
 public class DeleteUnitTests
 {
@@ -27,7 +28,7 @@ public class DeleteUnitTests
             Category = "Kategorie"
         };
 
-        repositoryMock.ReadByIdAsync(Arg.Any<int>()).Returns(toDoItem);
+        repositoryMock.ReadByIdAsync(toDoItem.ToDoItemId).Returns(toDoItem);
 
         //Act
         var result = await controller.DeleteByIdAsync(toDoItem.ToDoItemId);
@@ -35,7 +36,7 @@ public class DeleteUnitTests
         // Assert
         Assert.IsType<NoContentResult>(result);
         await repositoryMock.Received(1).ReadByIdAsync(toDoItem.ToDoItemId);
-        await repositoryMock.Received(1).DeleteAsync(toDoItem);
+        await repositoryMock.Received(1).DeleteAsync(Arg.Any<int>());
     }
 
     [Fact]
@@ -55,7 +56,7 @@ public class DeleteUnitTests
         // Assert
         Assert.IsType<NotFoundResult>(result);
         await repositoryMock.Received(1).ReadByIdAsync(99);
-        await repositoryMock.DidNotReceive().DeleteAsync(Arg.Any<ToDoItem>());
+        await repositoryMock.DidNotReceive().DeleteAsync(Arg.Any<int>());
     }
 
     [Fact]
@@ -84,7 +85,7 @@ public class DeleteUnitTests
         Assert.IsType<ObjectResult>(result);
         Assert.Equivalent(new StatusCodeResult(StatusCodes.Status500InternalServerError), result);
         await repositoryMock.Received(1).ReadByIdAsync(1);
-        await repositoryMock.DidNotReceive().DeleteAsync(Arg.Any<ToDoItem>());
+        await repositoryMock.DidNotReceive().DeleteAsync(Arg.Any<int>());
     }
 }
 
