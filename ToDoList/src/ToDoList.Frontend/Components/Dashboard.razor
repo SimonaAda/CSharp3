@@ -1,41 +1,60 @@
 ﻿@using ToDoList.Frontend.Views
 @using ToDoList.Frontend.Clients;
 @inject IToDoItemsClient ToDoItemsClient
+@inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
 <h1>Dashboard</h1>
-<table>
-    <thead>
-        <tr>
-            <td><button @onclick="OrderById">order by id</button></td>
-            <td><button @onclick="OrderByName">order by name</button></td>
-        </tr>
+<table class= "table table-hover mt-3">
+    <thead class="table-dark">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Completed</th>
+            <th>Category</th>
+            <th>Actions</th>
     </thead>
-    <body>
-        @if  (toDoItems is not null)
+
+    <tbody>
+        @if(toDoItems is null)
+        {
+            <p>Loading..</p>
+        }
+        @if(toDoItems is not null)
         {
             @foreach(var toDoItem in toDoItems)
     {
-        <tr>
+        <tr class="@TypeOfRowBasedOnToDoItemState(toDoItem.IsCompleted)">
             <td>@toDoItem.ToDoItemId</td>
             <td>@toDoItem.Name</td>
             <td>@toDoItem.Description</td>
             <td>@toDoItem.IsCompleted</td>
+            <td>@toDoItem.Category</td>
+            <td><i class="bi bi-pencil-square"@onclick="() => EditItem(toDoItem)"></i></td>
+            <td><i class="bi bi-trash3-fill"@onclick="() => DeleteItem(toDoItem)"></i></td>
+            <td><i class="@(toDoItem.IsCompleted ?"bi bi-check-lg" : "bi bi-x-lg")"@onclick="() => IsCompleted(toDoItem)"></i></td>
 
         </tr>
     }
         }
-
-    </body>
+    </tbody>
 </table>
+    <button class="btn btn-success"@onclick="OrderById">order by id</button>
+    <button class="btn btn-success"@onclick="OrderByName">order by name</button>
 
 @code
 {
+    private List<ToDoItemView>? toDoItems;
+
+        private string TypeOfRowBasedOnToDoItemState(bool isCompleted)
+        {
+            return isCompleted ? "table-success" : "table-danger";
+        }
     protected override async Task OnInitializedAsync()
     {
         toDoItems = await ToDoItemsClient.ReadItemsAsync();
     }
-    private List<ToDoItemView>? toDoItems;
+
 
     public void OrderByName()
     {
@@ -46,5 +65,24 @@
     {
         toDoItems = toDoItems?.OrderBy(ukol => ukol.ToDoItemId).ToList();
     }
+
+    public void EditItem(ToDoItemView toDoItem)
+    {
+       NavigationManager.NavigateTo($"editToDoItem/{toDoItem.ToDoItemId}");
+    }
+
+    public async Task DeleteItem(ToDoItemView toDoItem)
+    {
+        await ToDoItemsClient.DeleteItemAsync(toDoItem);
+        toDoItems = await ToDoItemsClient.ReadItemsAsync();
+    }
+
+    public async Task IsCompleted(ToDoItemView toDoItem)
+    {
+        toDoItem.IsCompleted = !toDoItem.IsCompleted;
+        await ToDoItemsClient.UpdateItemAsync(toDoItem);
+        toDoItems = await ToDoItemsClient.ReadItemsAsync();
+    }
+
 
 }
