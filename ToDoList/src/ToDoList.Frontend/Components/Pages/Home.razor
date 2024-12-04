@@ -4,3 +4,33 @@
 <PageTitle>Home</PageTitle>
 
 <Dashboard/>
+
+@code
+{
+    public delegate int NumberOperationDelegate(int number1, int number2);
+
+    NumberOperationDelegate operationDelegate;
+
+    int Multiply(int a, int b)
+    {
+        Console.WriteLine("Multiply called");
+        return a * b;
+    }
+
+    int Divide(int a, int b)
+    {
+        Console.WriteLine("Divide called");
+        return a / b;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NumberOperationDelegate operationDelegate;
+        operationDelegate = Multiply;
+
+        var result =operationDelegate(2,3);
+        Console.WriteLine(result);
+
+    }
+
+}
