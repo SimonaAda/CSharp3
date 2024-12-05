@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Http.Features;
 using ToDoList.Domain.DTOs;
 using ToDoList.Frontend.Views;
 
@@ -66,6 +67,7 @@ namespace ToDoList.Frontend.Clients
                 Name = response.Name,
                 Description = response.Description,
                 IsCompleted = response.IsCompleted,
+                Category = response.Category
             };
         }
         catch (Exception e)
@@ -91,7 +93,8 @@ namespace ToDoList.Frontend.Clients
                 ToDoItemId = dto.Id,
                 Name = dto.Name,
                 Description = dto.Description,
-                IsCompleted = dto.IsCompleted
+                IsCompleted = dto.IsCompleted,
+                Category = dto.Category
             }).ToList();
         }
         catch (Exception e)
