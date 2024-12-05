@@ -77,7 +77,7 @@
         toDoItems = await ToDoItemsClient.ReadItemsAsync();
     }
 
-    public async Task IsCompleted(ToDoItemView toDoItem)
+    public async Task IsCompleted(ToDoItemView toDoItem) //tohle bych pojmenoval možná jinak, třeba ToggleCompleteState
     {
         toDoItem.IsCompleted = !toDoItem.IsCompleted;
         await ToDoItemsClient.UpdateItemAsync(toDoItem);
